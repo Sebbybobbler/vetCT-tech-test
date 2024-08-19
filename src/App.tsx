@@ -1,6 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Home from "./Home.tsx";
+import CasesView from "./CasesView.tsx";
 import Root from "./Root.tsx";
+import SingleCaseView from "./SingleCaseView.tsx";
 import "./App.css";
 
 function App() {
@@ -9,8 +10,8 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Root />}>
-                        <Route index element={<Home />} />
-                        {/* <Route path="sessions" element={<Sessions />} /> */}
+                        <Route index element={<CasesView />} />
+                        <Route path=":caseId" element={<SingleCaseView />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
