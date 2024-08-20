@@ -1,6 +1,9 @@
 import { makeApiRequest } from "./services/apiService";
+import { useState, useEffect } from "react";
+import Row from "./components/Row/Row";
+import "./CasesView.css";
 
-interface CaseObject {
+export interface CaseObject {
     totalCases: number;
     totalPages: number;
     currentPage: number;
@@ -25,12 +28,46 @@ interface CaseObject {
 }
 
 function CasesView() {
-    const allCases: Promise<CaseObject> = makeApiRequest("");
-    allCases.then((result) => {
-        console.log(result.data);
-    });
+    const [response, setResponse] = useState<any>(null);
 
-    return <></>;
+    useEffect(() => {
+        async function initialRequest(): Promise<CaseObject> {
+            const allCases: Promise<CaseObject> = await makeApiRequest("");
+            setResponse((await allCases).data);
+            return allCases;
+        }
+        initialRequest();
+    }, []);
+    if (!response) {
+        return (
+            <>
+                <div>
+                    <p>Loading...</p>
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <table className="casesTable">
+                    <tbody>
+                        <tr>
+                            <th>Case Key</th>
+                            <th>Name</th>
+                            <th>Owner</th>
+                            <th>Specialty</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                        {response.map((element, index) => {
+                            console.log(element);
+                            return <Row row={element} />;
+                        })}
+                    </tbody>
+                </table>
+            </>
+        );
+    }
 }
 
 export default CasesView;
