@@ -28,6 +28,7 @@ export interface CaseObject {
 }
 
 function CasesView() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [response, setResponse] = useState<any>(null);
 
     useEffect(() => {
@@ -59,10 +60,11 @@ function CasesView() {
                             <th>Date</th>
                             <th></th>
                         </tr>
-                        {response.map((element, index) => {
-                            console.log(element);
-                            return <Row row={element} />;
-                        })}
+                        {response.map(
+                            (element: CaseObject["data"][0], index: number) => {
+                                return <Row key={index} row={element} />;
+                            }
+                        )}
                     </tbody>
                 </table>
             </>

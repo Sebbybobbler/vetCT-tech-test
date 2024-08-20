@@ -1,8 +1,7 @@
 import { CaseObject } from "../../CasesView";
 import "./Row.css";
 
-function Row({ row }) {
-    console.log({ row });
+function Row({ row }: { row: CaseObject["data"][0] }) {
     return (
         <>
             <tr>
