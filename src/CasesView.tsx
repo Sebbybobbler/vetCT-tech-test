@@ -60,8 +60,8 @@ function CasesView() {
   //   //   }
   //   //   searchFilter(response);
 
-  function handleChange(e: Event) {
-    const value: string = e.target.value;
+  function handleChange(e: React.FormEvent<HTMLInputElement>) {
+    const value: string = e.currentTarget.value;
     setSearch(value);
   }
   if (!response) {
