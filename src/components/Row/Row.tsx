@@ -1,7 +1,9 @@
 import { CaseObject } from "../../CasesView";
+import { NavLink } from "react-router-dom";
 import "./Row.css";
 
 function Row({ row }: { row: CaseObject["data"][0] }) {
+    const link: string = row.id;
     return (
         <>
             <tr>
@@ -11,7 +13,7 @@ function Row({ row }: { row: CaseObject["data"][0] }) {
                 <td>{row.specialty}</td>
                 <td>{row.creation_date}</td>
                 <td>
-                    <button>View</button>
+                    <NavLink to={link}>See More</NavLink>
                 </td>
             </tr>
         </>
