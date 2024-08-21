@@ -9,6 +9,7 @@
     width: 100%;
     margin: 0;
     border-bottom: 2px solid var(--primary);
+    max-height: 100px;
 }
 
 .headerLogo {
