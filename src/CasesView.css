@@ -1,6 +1,5 @@
 .casesTable {
-    padding-top: 100px;
-    min-width: 610px;
-    overflow-x: hidden;
-    border-spacing: 10px;
+  min-width: 610px;
+  overflow-x: hidden;
+  border-spacing: 10px;
 }
