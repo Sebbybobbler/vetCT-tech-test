@@ -46,8 +46,12 @@ function CasesView() {
       console.log(element.patient.toLowerCase().includes(search));
       return element.patient.toLowerCase().includes(search.toLowerCase());
     });
-    console.log(filteredArray);
-    return filteredArray;
+    const filteredBreed = response.filter((element) => {
+      return element.species.toLowerCase().includes(search.toLowerCase());
+    });
+    console.log([...filteredArray, ...filteredBreed]);
+
+    return [...filteredArray, ...filteredBreed];
   }
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
