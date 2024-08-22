@@ -27,9 +27,13 @@ export interface CaseObject {
   ];
 }
 
+export interface CaseObjectSetter {
+  setResponse: null | CaseObject;
+}
+
 function CasesView() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [response, setResponse] = useState<CaseObject>(null);
+  const [response, setResponse] =
+    useState<CaseObjectSetter["setResponse"]>(null);
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
@@ -57,7 +61,7 @@ function CasesView() {
     const value: string = e.currentTarget.value;
     setSearch(value);
   }
-  async function nextPage(response: CaseObject, setResponse) {
+  async function nextPage(response: CaseObject, setResponse: CaseObject) {
     const currentPage: number = response.currentPage;
     const maxPage = response.totalPages;
     const nextPage: number = currentPage + 1;
@@ -72,7 +76,7 @@ function CasesView() {
       console.log(response);
     }
   }
-  async function prevPage(response: CaseObject, setResponse) {
+  async function prevPage(response: CaseObject, setResponse: CaseObject) {
     const currentPage: number = response.currentPage;
     const prevPage: number = currentPage - 1;
     if (prevPage <= 0) {
