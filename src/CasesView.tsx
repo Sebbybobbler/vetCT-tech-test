@@ -41,25 +41,14 @@ function CasesView() {
     initialRequest();
   }, []);
 
-  //   async function searchFilter(response, search) {
-  //     const filteredArray = (await response).filter(async (element) => {
-  //       await element.patient.toLowerCase().includes(search.toLowerCase());
-  //     });
-  //     return await filteredArray;
-  //   }
-  //   const thing = searchFilter(response, search);
-  //   console.log(thing);
-  //   //   console.log(response);
-  //   //   async function searchFilter(response) {
-  //   //     await response.then((response) => {
-  //   //       const filteredArray = response.filter((element) => {
-  //   //         element.patient.toLowerCase().includes(search.toLowerCase());
-  //   //         console.log(filteredArray);
-  //   //       });
-  //   //     });
-  //   //   }
-  //   //   searchFilter(response);
-
+  function searchFilter(response, search) {
+    const filteredArray = response.filter((element) => {
+      console.log(element.patient.toLowerCase().includes(search));
+      return element.patient.toLowerCase().includes(search.toLowerCase());
+    });
+    console.log(filteredArray);
+    return filteredArray;
+  }
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
     setSearch(value);
@@ -91,9 +80,12 @@ function CasesView() {
               <th>Date</th>
               <th></th>
             </tr>
-            {response.map((element: CaseObject["data"][0], index: number) => {
-              return <Row key={index} row={element} />;
-            })}
+            {searchFilter(response, search).map(
+              (element: CaseObject["data"][0], index: number) => {
+                console.log(searchFilter(response, search));
+                return <Row key={index} row={element} />;
+              }
+            )}
           </tbody>
         </table>
       </>
