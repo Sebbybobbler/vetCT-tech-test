@@ -56,8 +56,15 @@ function CasesView() {
       return element.species.toLowerCase().includes(search.toLowerCase());
     });
 
-    return [...filteredArray, ...filteredBreed];
+    const result = filteredBreed.reduce(
+      (acc, item) => {
+        return acc.includes(item) ? acc : [...acc, item];
+      },
+      [...filteredArray]
+    );
+    return result;
   }
+
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
     setSearch(value);
