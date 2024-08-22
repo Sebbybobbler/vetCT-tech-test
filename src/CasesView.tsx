@@ -43,13 +43,11 @@ function CasesView() {
 
   function searchFilter(response: CaseObject["data"], search: string) {
     const filteredArray = response.filter((element) => {
-      console.log(element.patient.toLowerCase().includes(search));
       return element.patient.toLowerCase().includes(search.toLowerCase());
     });
     const filteredBreed = response.filter((element) => {
       return element.species.toLowerCase().includes(search.toLowerCase());
     });
-    console.log([...filteredArray, ...filteredBreed]);
 
     return [...filteredArray, ...filteredBreed];
   }
@@ -86,7 +84,6 @@ function CasesView() {
             </tr>
             {searchFilter(response, search).map(
               (element: CaseObject["data"][0], index: number) => {
-                console.log(searchFilter(response, search));
                 return <Row key={index} row={element} />;
               }
             )}
