@@ -29,23 +29,25 @@ export interface CaseObject {
 
 function CasesView() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [response, setResponse] = useState<any>(null);
+  const [response, setResponse] = useState<CaseObject>(null);
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
-      const allCases: Promise<CaseObject> = await makeApiRequest("");
-      setResponse((await allCases).data);
-      return allCases;
+      const firstPage: Promise<CaseObject> = await makeApiRequest(
+        "?page=1&limit=10"
+      );
+      setResponse(await firstPage);
+      return firstPage;
     }
     initialRequest();
   }, []);
 
-  function searchFilter(response: CaseObject["data"], search: string) {
-    const filteredArray = response.filter((element) => {
+  function searchFilter(response: CaseObject, search: string) {
+    const filteredArray = response.data.filter((element) => {
       return element.patient.toLowerCase().includes(search.toLowerCase());
     });
-    const filteredBreed = response.filter((element) => {
+    const filteredBreed = response.data.filter((element) => {
       return element.species.toLowerCase().includes(search.toLowerCase());
     });
 
@@ -55,6 +57,35 @@ function CasesView() {
     const value: string = e.currentTarget.value;
     setSearch(value);
   }
+  async function nextPage(response: CaseObject, setResponse) {
+    const currentPage: number = response.currentPage;
+    const maxPage = response.totalPages;
+    const nextPage: number = currentPage + 1;
+    if (nextPage > maxPage) {
+      return <></>;
+    } else {
+      const fetchNextPage: Promise<CaseObject> = await makeApiRequest(
+        `?page=${nextPage}&limit=10`
+      );
+      setResponse(await fetchNextPage);
+      return fetchNextPage;
+      console.log(response);
+    }
+  }
+  async function prevPage(response: CaseObject, setResponse) {
+    const currentPage: number = response.currentPage;
+    const prevPage: number = currentPage - 1;
+    if (prevPage <= 0) {
+      return <></>;
+    } else {
+      const fetchPrevPage: Promise<CaseObject> = await makeApiRequest(
+        `?page=${prevPage}&limit=10`
+      );
+      setResponse(await fetchPrevPage);
+      return fetchPrevPage;
+    }
+  }
+
   if (!response) {
     return (
       <>
@@ -89,6 +120,12 @@ function CasesView() {
             )}
           </tbody>
         </table>
+        <button onClick={() => prevPage(response, setResponse)}>
+          Previous Page
+        </button>
+        <button onClick={() => nextPage(response, setResponse)}>
+          Next Page
+        </button>
       </>
     );
   }
