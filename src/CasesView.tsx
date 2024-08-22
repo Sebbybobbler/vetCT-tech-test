@@ -41,7 +41,7 @@ function CasesView() {
     initialRequest();
   }, []);
 
-  function searchFilter(response, search) {
+  function searchFilter(response: CaseObject["data"], search: string) {
     const filteredArray = response.filter((element) => {
       console.log(element.patient.toLowerCase().includes(search));
       return element.patient.toLowerCase().includes(search.toLowerCase());
