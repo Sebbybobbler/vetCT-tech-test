@@ -35,6 +35,7 @@ function CasesView() {
   const [response, setResponse] =
     useState<CaseObjectSetter["setResponse"]>(null);
   const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
@@ -71,9 +72,10 @@ function CasesView() {
       const fetchNextPage: Promise<CaseObject> = await makeApiRequest(
         `?page=${nextPage}&limit=10`
       );
+      setCurrentPage(nextPage);
       setResponse(await fetchNextPage);
+
       return fetchNextPage;
-      console.log(response);
     }
   }
   async function prevPage(response: CaseObject, setResponse: CaseObject) {
@@ -85,6 +87,7 @@ function CasesView() {
       const fetchPrevPage: Promise<CaseObject> = await makeApiRequest(
         `?page=${prevPage}&limit=10`
       );
+      setCurrentPage(prevPage);
       setResponse(await fetchPrevPage);
       return fetchPrevPage;
     }
@@ -124,12 +127,15 @@ function CasesView() {
             )}
           </tbody>
         </table>
-        <button onClick={() => prevPage(response, setResponse)}>
-          Previous Page
-        </button>
-        <button onClick={() => nextPage(response, setResponse)}>
-          Next Page
-        </button>
+        <div className="casesPageContainer">
+          <button onClick={() => prevPage(response, setResponse)}>
+            Previous Page
+          </button>
+          <p> {currentPage} </p>
+          <button onClick={() => nextPage(response, setResponse)}>
+            Next Page
+          </button>
+        </div>
       </>
     );
   }
