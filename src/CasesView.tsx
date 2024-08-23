@@ -36,6 +36,8 @@ function CasesView() {
     useState<CaseObjectSetter["setResponse"]>(null);
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [allCases, setAllCases] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
@@ -48,6 +50,15 @@ function CasesView() {
     initialRequest();
   }, []);
 
+  async function fetchAllCases(response: CaseObject, allCases: CaseObject) {
+    const maxCases: number = await response.totalCases;
+    const fetchCases: Promise<CaseObject> = await makeApiRequest(
+      `?page=1&limit=${maxCases}`
+    );
+    setAllCases(await fetchCases);
+    setIsSearching(true);
+    return allCases;
+  }
   function searchFilter(response: CaseObject, search: string) {
     const filteredArray = response.data.filter((element) => {
       return element.patient.toLowerCase().includes(search.toLowerCase());
@@ -67,7 +78,12 @@ function CasesView() {
 
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
-    setSearch(value);
+    if (value.length < search.length) {
+      setIsSearching(false);
+      setSearch(value);
+    } else {
+      setSearch(value);
+    }
   }
   async function nextPage(response: CaseObject, setResponse: CaseObject) {
     const currentPage: number = response.currentPage;
@@ -117,6 +133,10 @@ function CasesView() {
           onChange={handleChange}
           value={search}
         />
+        <button onClick={() => fetchAllCases(response, allCases)}>
+          {" "}
+          search
+        </button>
         <table className="casesTable">
           <tbody>
             <tr>
@@ -127,21 +147,43 @@ function CasesView() {
               <th>Date</th>
               <th></th>
             </tr>
-            {searchFilter(response, search).map(
-              (element: CaseObject["data"][0], index: number) => {
-                return <Row key={index} row={element} />;
-              }
-            )}
+            {isSearching
+              ? searchFilter(allCases, search).map(
+                  (element: CaseObject["data"][0], index: number) => {
+                    return <Row key={index} row={element} />;
+                  }
+                )
+              : response.data.map(
+                  (element: CaseObject["data"][0], index: number) => {
+                    return <Row key={index} row={element} />;
+                  }
+                )}
           </tbody>
         </table>
         <div className="casesPageContainer">
-          <button onClick={() => prevPage(response, setResponse)}>
-            Previous Page
-          </button>
-          <p> {currentPage} </p>
-          <button onClick={() => nextPage(response, setResponse)}>
-            Next Page
-          </button>
+          {isSearching ? (
+            <>
+              {/* {" "}
+              <button onClick={() => prevPage(allCases, setResponse)}>
+                Previous Page
+              </button>
+              <p> {currentPage} </p>
+              <button onClick={() => nextPage(allCases, setResponse)}>
+                Next Page
+              </button> */}
+            </>
+          ) : (
+            <>
+              {" "}
+              <button onClick={() => prevPage(response, setResponse)}>
+                Previous Page
+              </button>
+              <p> {currentPage} </p>
+              <button onClick={() => nextPage(response, setResponse)}>
+                Next Page
+              </button>
+            </>
+          )}
         </div>
       </>
     );
