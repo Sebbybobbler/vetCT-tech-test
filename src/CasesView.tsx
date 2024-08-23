@@ -27,34 +27,79 @@ export interface CaseObject {
   ];
 }
 
+export interface CaseObjectSetter {
+  setResponse: null | CaseObject;
+}
+
 function CasesView() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [response, setResponse] = useState<any>(null);
+  const [response, setResponse] =
+    useState<CaseObjectSetter["setResponse"]>(null);
   const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
-      const allCases: Promise<CaseObject> = await makeApiRequest("");
-      setResponse((await allCases).data);
-      return allCases;
+      const firstPage: Promise<CaseObject> = await makeApiRequest(
+        "?page=1&limit=10"
+      );
+      setResponse(await firstPage);
+      return firstPage;
     }
     initialRequest();
   }, []);
 
-  function searchFilter(response: CaseObject["data"], search: string) {
-    const filteredArray = response.filter((element) => {
+  function searchFilter(response: CaseObject, search: string) {
+    const filteredArray = response.data.filter((element) => {
       return element.patient.toLowerCase().includes(search.toLowerCase());
     });
-    const filteredBreed = response.filter((element) => {
+    const filteredBreed = response.data.filter((element) => {
       return element.species.toLowerCase().includes(search.toLowerCase());
     });
 
-    return [...filteredArray, ...filteredBreed];
+    const result = filteredBreed.reduce(
+      (acc, item) => {
+        return acc.includes(item) ? acc : [...acc, item];
+      },
+      [...filteredArray]
+    );
+    return result;
   }
+
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
     setSearch(value);
   }
+  async function nextPage(response: CaseObject, setResponse: CaseObject) {
+    const currentPage: number = response.currentPage;
+    const maxPage = response.totalPages;
+    const nextPage: number = currentPage + 1;
+    if (nextPage > maxPage) {
+      return <></>;
+    } else {
+      const fetchNextPage: Promise<CaseObject> = await makeApiRequest(
+        `?page=${nextPage}&limit=10`
+      );
+      setCurrentPage(nextPage);
+      setResponse(await fetchNextPage);
+
+      return fetchNextPage;
+    }
+  }
+  async function prevPage(response: CaseObject, setResponse: CaseObject) {
+    const currentPage: number = response.currentPage;
+    const prevPage: number = currentPage - 1;
+    if (prevPage <= 0) {
+      return <></>;
+    } else {
+      const fetchPrevPage: Promise<CaseObject> = await makeApiRequest(
+        `?page=${prevPage}&limit=10`
+      );
+      setCurrentPage(prevPage);
+      setResponse(await fetchPrevPage);
+      return fetchPrevPage;
+    }
+  }
+
   if (!response) {
     return (
       <>
@@ -89,6 +134,15 @@ function CasesView() {
             )}
           </tbody>
         </table>
+        <div className="casesPageContainer">
+          <button onClick={() => prevPage(response, setResponse)}>
+            Previous Page
+          </button>
+          <p> {currentPage} </p>
+          <button onClick={() => nextPage(response, setResponse)}>
+            Next Page
+          </button>
+        </div>
       </>
     );
   }
