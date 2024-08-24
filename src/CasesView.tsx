@@ -73,7 +73,7 @@ function CasesView() {
       [...filteredArray]
     );
     return {
-      rows: result.slice((currentPage - 1) * 10, currentPage * 10 + 1),
+      rows: result.slice((currentPage - 1) * 10, currentPage * 10),
       pages: Math.ceil(result.length / 10),
     };
   }
