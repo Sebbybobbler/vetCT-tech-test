@@ -126,7 +126,7 @@ function CasesView() {
     );
   } else {
     return (
-      <>
+      <div>
         <input
           type="text"
           placeholder="search"
@@ -170,7 +170,7 @@ function CasesView() {
           <p> {currentPage} </p>
           <button onClick={() => nextPage()}>Next Page</button>
         </div>
-      </>
+      </div>
     );
   }
 }
