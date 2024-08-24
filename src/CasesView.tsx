@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Row from "./components/Row/Row";
 import "./CasesView.css";
 
-export interface CaseObject {
+export type CaseObject = {
   totalCases: number;
   totalPages: number;
   currentPage: number;
@@ -25,34 +25,44 @@ export interface CaseObject {
       image_url: string;
     }
   ];
-}
-
-export interface CaseObjectSetter {
-  setResponse: null | CaseObject;
-}
+};
 
 function CasesView() {
-  const [response, setResponse] =
-    useState<CaseObjectSetter["setResponse"]>(null);
+  const [response, setResponse] = useState<CaseObject | null>(null);
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [allCases, setAllCases] = useState<CaseObject | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [totalCases, setTotalCases] = useState(0);
 
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
       const firstPage: Promise<CaseObject> = await makeApiRequest(
         "?page=1&limit=10"
       );
+      setTotalCases((await firstPage).totalCases);
       setResponse(await firstPage);
       return firstPage;
     }
     initialRequest();
   }, []);
 
-  function searchFilter(response: CaseObject, search: string) {
-    const filteredArray = response.data.filter((element) => {
-      return element.patient.toLowerCase().includes(search.toLowerCase());
-    });
-    const filteredBreed = response.data.filter((element) => {
+  async function fetchAllCases() {
+    const fetchCases: Promise<CaseObject> = await makeApiRequest(
+      `?page=1&limit=${totalCases}`
+    );
+    setAllCases(await fetchCases);
+    setIsSearching(true);
+    setCurrentPage(1);
+    return allCases;
+  }
+  function searchFilter(search: string) {
+    const filteredArray = allCases!.data.filter(
+      (element: CaseObject["data"][0]) => {
+        return element.patient.toLowerCase().includes(search.toLowerCase());
+      }
+    );
+    const filteredBreed = allCases!.data.filter((element) => {
       return element.species.toLowerCase().includes(search.toLowerCase());
     });
 
@@ -62,16 +72,23 @@ function CasesView() {
       },
       [...filteredArray]
     );
-    return result;
+    return {
+      rows: result.slice((currentPage - 1) * 10, currentPage * 10),
+      pages: Math.ceil(result.length / 10),
+    };
   }
 
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
+    if (value.length != search.length) {
+      setCurrentPage(1);
+    }
     setSearch(value);
   }
-  async function nextPage(response: CaseObject, setResponse: CaseObject) {
-    const currentPage: number = response.currentPage;
-    const maxPage = response.totalPages;
+  async function nextPage() {
+    const maxPage = isSearching
+      ? searchFilter(search).pages
+      : Math.ceil(totalCases / 10);
     const nextPage: number = currentPage + 1;
     if (nextPage > maxPage) {
       return <></>;
@@ -85,8 +102,7 @@ function CasesView() {
       return fetchNextPage;
     }
   }
-  async function prevPage(response: CaseObject, setResponse: CaseObject) {
-    const currentPage: number = response.currentPage;
+  async function prevPage() {
     const prevPage: number = currentPage - 1;
     if (prevPage <= 0) {
       return <></>;
@@ -110,40 +126,51 @@ function CasesView() {
     );
   } else {
     return (
-      <>
+      <div>
         <input
           type="text"
           placeholder="search"
           onChange={handleChange}
           value={search}
         />
-        <table className="casesTable">
-          <tbody>
-            <tr>
-              <th>Case Key</th>
-              <th>Name</th>
-              <th>Owner</th>
-              <th>Specialty</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-            {searchFilter(response, search).map(
-              (element: CaseObject["data"][0], index: number) => {
-                return <Row key={index} row={element} />;
-              }
-            )}
-          </tbody>
-        </table>
-        <div className="casesPageContainer">
-          <button onClick={() => prevPage(response, setResponse)}>
-            Previous Page
-          </button>
-          <p> {currentPage} </p>
-          <button onClick={() => nextPage(response, setResponse)}>
-            Next Page
-          </button>
+        <button
+          onClick={() => {
+            fetchAllCases();
+          }}
+        >
+          {" "}
+          search
+        </button>
+        <div className="casesTableContainer">
+          <table className="casesTable">
+            <tbody>
+              <tr>
+                <th>Case Key</th>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Specialty</th>
+                <th>Date</th>
+                <th></th>
+              </tr>
+              {isSearching
+                ? searchFilter(search).rows.map(
+                    (element: CaseObject["data"][0]) => {
+                      return <Row key={element.id} row={element} />;
+                    }
+                  )
+                : response.data.map((element: CaseObject["data"][0]) => {
+                    return <Row key={element.id} row={element} />;
+                  })}
+            </tbody>
+          </table>
         </div>
-      </>
+        <div className="casesPageContainer">
+          {" "}
+          <button onClick={() => prevPage()}>Previous Page</button>
+          <p> {currentPage} </p>
+          <button onClick={() => nextPage()}>Next Page</button>
+        </div>
+      </div>
     );
   }
 }
