@@ -1,7 +1,7 @@
 import { makeApiRequest } from "./services/apiService";
 import { useState, useEffect } from "react";
 import Row from "./components/Row/Row";
-import "./CasesView.css";
+import "./assets/css/CasesView.css";
 
 export type CaseObject = {
   totalCases: number;
