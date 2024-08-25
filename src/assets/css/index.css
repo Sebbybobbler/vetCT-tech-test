@@ -3,7 +3,7 @@
   --primary: #880837;
   --text: #383838;
 
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Quattrocento Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   background-color: white;
@@ -19,7 +19,7 @@ body {
   margin: 0;
   display: block;
   place-items: center;
-  width: 500px;
+  width: 100vw;
   height: 100vh;
   overflow: visible;
 }

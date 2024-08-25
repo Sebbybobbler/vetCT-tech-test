@@ -1,0 +1,12 @@
+td {
+  text-wrap: nowrap;
+  letter-spacing: 1px;
+}
+
+tr:nth-child(even) {
+  background-color: #88083720;
+}
+
+/* td:nth-child(even) {
+  background-color: #88083720;
+} */

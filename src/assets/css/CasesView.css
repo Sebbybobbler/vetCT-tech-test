@@ -1,8 +1,33 @@
-.casesTable {
-  min-width: 610px;
-  border-spacing: 10px;
+.casesSearch {
+  width: 100vw;
+  position: sticky;
+  left: 3%;
+  overflow: visible;
 }
 
-.casesTableContainer {
+table {
+  padding-top: 50px;
+  border-spacing: 1px;
+  table-layout: fixed;
+  width: max-content;
+  border-collapse: collapse;
+}
+
+.casesContainer {
+  align-items: center;
   padding-top: 100px;
+  overflow: visible;
+  width: fit-content;
+}
+
+.casesTable th {
+  text-wrap: nowrap;
+  font-family: "Play";
+  border-bottom: 2px solid var(--primary);
+}
+
+th,
+td {
+  padding: 15px;
+  color: var(--text);
 }

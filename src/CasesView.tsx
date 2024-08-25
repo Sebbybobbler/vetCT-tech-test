@@ -130,23 +130,25 @@ function CasesView() {
     return (
       <>
         <Header />
-        <input
-          type="text"
-          placeholder="search"
-          onChange={handleChange}
-          value={search}
-        />
-        <button
-          onClick={() => {
-            fetchAllCases();
-          }}
-        >
-          {" "}
-          search
-        </button>
-        <div className="casesTableContainer">
+        <div className="casesContainer">
+          <div className="casesSearch">
+            <input
+              type="text"
+              placeholder="Enter Patient or Breed"
+              onChange={handleChange}
+              value={search}
+            />
+            <button
+              onClick={() => {
+                fetchAllCases();
+              }}
+            >
+              {" "}
+              search
+            </button>
+          </div>
           <table className="casesTable">
-            <tbody>
+            <thead>
               <tr>
                 <th>Case Key</th>
                 <th>Name</th>
@@ -155,6 +157,8 @@ function CasesView() {
                 <th>Date</th>
                 <th></th>
               </tr>
+            </thead>
+            <tbody>
               {isSearching
                 ? searchFilter(search).rows.map(
                     (element: CaseObject["data"][0]) => {
