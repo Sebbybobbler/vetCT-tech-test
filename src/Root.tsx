@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Header.tsx";
 
 function Root() {
-    return (
-        <div>
-            <Header />
-            <Outlet />
-        </div>
-    );
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 }
 
 export default Root;

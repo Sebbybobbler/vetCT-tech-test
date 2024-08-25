@@ -3,11 +3,12 @@
   --primary: #880837;
   --text: #383838;
 
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Quattrocento Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   background-color: white;
+  display: block;
+  overflow: visible;
 }
 
 p {
@@ -16,8 +17,8 @@ p {
 
 body {
   margin: 0;
-  display: flex;
   place-items: center;
-  min-width: 100vw;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
 }

@@ -1,7 +1,13 @@
 import { makeApiRequest } from "./services/apiService";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCircleArrowRight,
+  faCircleArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import Row from "./components/Row/Row";
-import "./CasesView.css";
+import Header from "./components/Header/Header";
+import "./assets/css/CasesView.css";
 
 export type CaseObject = {
   totalCases: number;
@@ -34,6 +40,7 @@ function CasesView() {
   const [allCases, setAllCases] = useState<CaseObject | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [totalCases, setTotalCases] = useState(0);
+  const [maxPages, setMaxPages] = useState(1);
 
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
@@ -42,6 +49,7 @@ function CasesView() {
       );
       setTotalCases((await firstPage).totalCases);
       setResponse(await firstPage);
+      setMaxPages((await firstPage).totalPages);
       return firstPage;
     }
     initialRequest();
@@ -89,6 +97,7 @@ function CasesView() {
     const maxPage = isSearching
       ? searchFilter(search).pages
       : Math.ceil(totalCases / 10);
+    setMaxPages(maxPage);
     const nextPage: number = currentPage + 1;
     if (nextPage > maxPage) {
       return <></>;
@@ -119,6 +128,8 @@ function CasesView() {
   if (!response) {
     return (
       <>
+        <Header />
+        <h1 className="casesHeading">My Cases</h1>
         <div>
           <p>Loading...</p>
         </div>
@@ -126,24 +137,29 @@ function CasesView() {
     );
   } else {
     return (
-      <div>
-        <input
-          type="text"
-          placeholder="search"
-          onChange={handleChange}
-          value={search}
-        />
-        <button
-          onClick={() => {
-            fetchAllCases();
-          }}
-        >
-          {" "}
-          search
-        </button>
-        <div className="casesTableContainer">
+      <>
+        <Header />
+        <div className="casesContainer">
+          <h1 className="casesHeading">My Cases</h1>
+          <div className="casesSearch">
+            <input
+              type="text"
+              placeholder="Search Patient or Breed"
+              onChange={handleChange}
+              value={search}
+            />
+            <button
+              className="casesPrimaryButton"
+              onClick={() => {
+                fetchAllCases();
+              }}
+            >
+              {" "}
+              Search
+            </button>
+          </div>
           <table className="casesTable">
-            <tbody>
+            <thead>
               <tr>
                 <th>Case Key</th>
                 <th>Name</th>
@@ -152,6 +168,8 @@ function CasesView() {
                 <th>Date</th>
                 <th></th>
               </tr>
+            </thead>
+            <tbody>
               {isSearching
                 ? searchFilter(search).rows.map(
                     (element: CaseObject["data"][0]) => {
@@ -163,14 +181,35 @@ function CasesView() {
                   })}
             </tbody>
           </table>
+
+          <div className="casesPageContainer">
+            <div className="casesPageIcons">
+              {currentPage == 1 ? (
+                <></>
+              ) : (
+                <FontAwesomeIcon
+                  className="pageIcon"
+                  icon={faCircleArrowLeft}
+                  onClick={() => prevPage()}
+                  aria-label="Previous Page button"
+                />
+              )}
+
+              <h2>{currentPage}</h2>
+              {currentPage == maxPages ? (
+                <></>
+              ) : (
+                <FontAwesomeIcon
+                  className="pageIcon"
+                  icon={faCircleArrowRight}
+                  onClick={() => nextPage()}
+                  aria-label="Next Page button"
+                />
+              )}
+            </div>
+          </div>
         </div>
-        <div className="casesPageContainer">
-          {" "}
-          <button onClick={() => prevPage()}>Previous Page</button>
-          <p> {currentPage} </p>
-          <button onClick={() => nextPage()}>Next Page</button>
-        </div>
-      </div>
+      </>
     );
   }
 }

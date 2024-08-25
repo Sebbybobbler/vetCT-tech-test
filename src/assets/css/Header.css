@@ -1,0 +1,45 @@
+header {
+  position: fixed;
+  display: flex;
+  top: 0px;
+  width: 100vw;
+  z-index: 99;
+  height: 80px;
+  border-bottom: 2px solid var(--primary);
+  background-color: white;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  header {
+    display: flex;
+    position: fixed;
+    align-self: center;
+    justify-self: center;
+    width: 900px;
+    place-self: center;
+    top: unset;
+  }
+}
+
+.headerLogo {
+  height: 80%;
+  top: 0;
+  left: 0;
+  padding: 15px;
+  z-index: 999;
+  margin-left: 15px;
+}
+
+.headerProfile {
+  top: 0;
+  right: 0;
+  padding: 13px;
+  z-index: 999;
+}
+
+.headerItem {
+  height: 80%;
+  padding: 15px;
+}
