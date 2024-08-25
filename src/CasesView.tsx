@@ -1,6 +1,7 @@
 import { makeApiRequest } from "./services/apiService";
 import { useState, useEffect } from "react";
 import Row from "./components/Row/Row";
+import Header from "./components/Header/Header";
 import "./assets/css/CasesView.css";
 
 export type CaseObject = {
@@ -119,6 +120,7 @@ function CasesView() {
   if (!response) {
     return (
       <>
+        <Header />
         <div>
           <p>Loading...</p>
         </div>
@@ -126,7 +128,8 @@ function CasesView() {
     );
   } else {
     return (
-      <div>
+      <>
+        <Header />
         <input
           type="text"
           placeholder="search"
@@ -170,7 +173,7 @@ function CasesView() {
           <p> {currentPage} </p>
           <button onClick={() => nextPage()}>Next Page</button>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -3,6 +3,7 @@ import { makeApiRequest } from "./services/apiService";
 import { useEffect, useState } from "react";
 import { CaseObject } from "./CasesView";
 import "./assets/css/SingleCaseView.css";
+import Header from "./components/Header/Header";
 
 function SingleCaseView() {
   const { caseId } = useParams();
@@ -21,6 +22,7 @@ function SingleCaseView() {
   if (!detailedResponse) {
     return (
       <>
+        <Header />
         <div>
           <p>Loading...</p>
         </div>
@@ -29,6 +31,7 @@ function SingleCaseView() {
   } else {
     return (
       <>
+        <Header />
         <div className="patientInfoBox">
           <img src={detailedResponse.data.image_url} alt="image of patient" />
           <h2>{detailedResponse.data.patient}</h2>
