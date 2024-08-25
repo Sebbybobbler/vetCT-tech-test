@@ -8,4 +8,5 @@
   flex-direction: column;
   background-color: var(--primary);
   background-image: url("../images/dna_image.webp");
+  caret-color: transparent;
 }
