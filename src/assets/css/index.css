@@ -17,7 +17,6 @@ p {
 
 body {
   margin: 0;
-  display: block;
   place-items: center;
   width: 100vw;
   height: 100vh;
