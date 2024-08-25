@@ -1,24 +1,27 @@
-.headerContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: white;
-    width: 100%;
-    margin: 0;
-    border-bottom: 2px solid var(--primary);
-    max-height: 100px;
+header {
+  position: fixed;
+  display: flex;
+  top: 0px;
+  width: 100vw;
+  z-index: 99;
+  height: 10%;
+  border-bottom: 2px solid var(--primary);
+  background-color: white;
+  justify-content: space-between;
 }
 
 .headerLogo {
-    width: 20%;
-    padding: 0.8rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: 0.8rem;
+  z-index: 999;
 }
 
 .headerProfile {
-    width: 10%;
-    height: 10%;
-    padding: 0.8rem;
+  position: sticky;
+  top: 0;
+  right: 0;
+  padding: 0.8rem;
+  z-index: 999;
 }
