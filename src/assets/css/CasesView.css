@@ -1,8 +1,59 @@
+.casesHeading {
+  position: sticky;
+  width: 100vw;
+  left: 15px;
+  text-align: start;
+  font-family: "Play", sans-serif;
+  color: var(--text);
+  margin-right: -15px;
+  margin-bottom: 50px;
+}
+
 .casesSearch {
   width: 100vw;
   position: sticky;
   left: 0%;
   overflow: visible;
+}
+
+.casesPrimaryButton {
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Play", sans-serif;
+  color: white;
+  background-color: #3b9194;
+  padding: 8px 2px;
+  width: 75px;
+  border-radius: 25px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.casesPrimaryButton:hover {
+  animation: pulsate 1s ease;
+}
+
+@-webkit-keyframes pulsate {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 0.4em #3b919460;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.casesSearch input {
+  border: none;
+  margin-right: 10px;
+  outline: none;
+  background-color: lightgray;
+  height: 31px;
+  border-radius: 25px;
+  text-indent: 5px;
 }
 
 table {
@@ -30,4 +81,24 @@ th,
 td {
   padding: 15px;
   color: var(--text);
+}
+.casesPageContainer {
+  width: 100vw;
+  position: sticky;
+  left: 0%;
+  overflow: visible;
+}
+
+.casesPageIcons {
+  display: inline-flex;
+  gap: 20%;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageIcon {
+  color: var(--primary);
+  height: 30px;
+  cursor: pointer;
 }

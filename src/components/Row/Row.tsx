@@ -12,7 +12,9 @@ function Row({ row }: { row: CaseObject["data"][0] }) {
       <td>{row.specialty}</td>
       <td>{row.creation_date}</td>
       <td>
-        <NavLink to={link}>See More</NavLink>
+        <NavLink className="casesPrimaryButton" to={link}>
+          View
+        </NavLink>
       </td>
     </tr>
   );

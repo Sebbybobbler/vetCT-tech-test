@@ -7,6 +7,7 @@ tr:nth-child(even) {
   background-color: #88083720;
 }
 
-/* td:nth-child(even) {
-  background-color: #88083720;
-} */
+.casesPrimaryButton a {
+  text-decoration: none;
+  color: white;
+}
