@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-import "/assets/css/SingleCaseView.css";
+import "./assets/css/SingleCaseView.css";
 import Header from "./components/Header/Header";
 
 export type detailedCaseObject = {
