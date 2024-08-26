@@ -1,0 +1,186 @@
+.patientContainer {
+  font-family: "Play";
+  background-color: white;
+  width: 100vw;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 150px;
+  color: var(--text);
+  text-align: start;
+  align-items: center;
+  height: 100vh;
+}
+
+.patientInfoHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.patientInfoBody {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.patientContainer p {
+  margin: 0;
+  font-size: 1.2em;
+  text-decoration: underline 3px var(--primary);
+}
+
+.patientInfoBox {
+  display: flex;
+  background-color: rgba(119, 136, 153, 0.068);
+  flex-direction: column;
+  width: 100vw;
+}
+
+.patientInfoRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.patientInfoLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 175px;
+}
+
+.patientInfoLeft .patientInfoItem {
+  display: flex;
+  flex-direction: column;
+
+  width: 75%;
+}
+
+.patientImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: 70% 50%;
+  border-radius: 10px;
+  margin: 10px 10px;
+}
+
+.patientInfoItem {
+  margin: 10px 10px;
+}
+
+.patientInfoName {
+  margin-top: 0;
+  text-align: center;
+}
+
+.patientTurnaroundStandard {
+  background-color: yellow;
+  text-align: center;
+  border: 1px solid var(--primary);
+}
+
+.patientTurnaroundUrgent {
+  background-color: red;
+  color: white;
+  border: 1px solid var(--text);
+}
+
+.patientReport {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.patientReportItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 175px;
+  margin-left: 10px;
+}
+
+.isCentered {
+  text-align: center;
+  margin-left: 0;
+}
+
+.patientReportStatus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.homePageReturn {
+  position: absolute;
+  top: 100px;
+  left: 30px;
+}
+
+@media (min-width: 600px) {
+  .patientInfoBox {
+    width: 600px;
+    min-height: 340px;
+    border-radius: 10px;
+  }
+  .patientInfoHead {
+    justify-content: space-evenly;
+  }
+  .patientInfoLeft {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30%;
+    align-items: end;
+  }
+  .patientImage {
+    width: 200px;
+    height: 200px;
+  }
+  .patientInfoBody {
+    flex-direction: row;
+    align-items: center;
+  }
+  .patientReport {
+    width: 600px;
+    justify-content: space-between;
+  }
+  .patientReportStatus {
+    align-items: start;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .patientReportItem {
+    width: auto;
+  }
+  .patientReportStatus {
+    text-align: left;
+  }
+  .patientReportStatus h2 {
+    text-align: center;
+  }
+  .patientContainer {
+    min-height: 900px;
+  }
+}
+
+@media (min-width: 900px) {
+  .patientContainer {
+    width: 900px;
+    margin-top: -30px;
+  }
+  .homePageReturn {
+    position: relative;
+    display: flex;
+    top: auto;
+    left: auto;
+    align-self: flex-start;
+    padding-left: 50px;
+  }
+}
