@@ -37,11 +37,11 @@ function SingleCaseView() {
         <Header />
         <div className="patientContainer">
           <div className="homePageReturn">
-            <NavLink to={"/"}>
+            <NavLink to={"/"} aria-label="Home Page Button">
               <FontAwesomeIcon
                 className="pageIcon"
                 icon={faCircleArrowLeft}
-                aria-label="Previous Page button"
+                aria-label="Home Page button Icon, Left pointing arrow"
               />
             </NavLink>
           </div>
