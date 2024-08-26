@@ -1,7 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { makeApiRequest } from "./services/apiService";
 import { useEffect, useState } from "react";
 import { CaseObject } from "./CasesView";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
 import "./assets/css/SingleCaseView.css";
 import Header from "./components/Header/Header";
 
@@ -32,20 +35,69 @@ function SingleCaseView() {
     return (
       <>
         <Header />
-        <div className="patientInfoBox">
-          <img src={detailedResponse.data.image_url} alt="image of patient" />
-          <h2>{detailedResponse.data.patient}</h2>
-          <h3>Owner: {detailedResponse.data.owner}</h3>
-          <h3>Species: {detailedResponse.data.species}</h3>
-          <h2>{detailedResponse.data.turnaround}</h2>
-          <h3>date created: {detailedResponse.data.creation_date} </h3>
-        </div>
-        <div className="patientReport">
-          <h3>Specialist: {detailedResponse.data.reporting_specialist}</h3>
-          <h3>Specialty: {detailedResponse.data.specialty}</h3>
-          <h3>Reported: {detailedResponse.data.reported_date}</h3>
-          <h3>Body Areas: {detailedResponse.data.body_areas}</h3>
-          <h2> {detailedResponse.data.status}</h2>
+        <div className="patientContainer">
+          <div className="homePageReturn">
+            <NavLink to={"/"}>
+              <FontAwesomeIcon
+                className="pageIcon"
+                icon={faCircleArrowLeft}
+                aria-label="Previous Page button"
+              />
+            </NavLink>
+          </div>
+          <div className="patientInfoBox">
+            <div className="patientInfoHead">
+              <img
+                className="patientImage"
+                src={detailedResponse.data.image_url}
+                alt="image of patient"
+              />
+              <h1 className="patientInfoItem patientInfoName">
+                {detailedResponse.data.patient}
+              </h1>
+            </div>
+            <div className="patientInfoBody">
+              <div className="patientInfoLeft">
+                <h3 className="patientInfoItem">
+                  <p>Owner</p> {detailedResponse.data.owner}
+                </h3>
+                <h3 className="patientInfoItem">
+                  <p>Species</p> {detailedResponse.data.species}
+                </h3>
+              </div>
+              <div className="patientInfoRight">
+                <h2
+                  className={`${
+                    detailedResponse.data.turnaround == "Urgent"
+                      ? "patientTurnaroundUrgent"
+                      : "patientTurnaroundStandard"
+                  } patientInfoItem  }`}
+                >
+                  {detailedResponse.data.turnaround}
+                </h2>
+                <h3 className="patientInfoItem">
+                  <p>Created</p> {detailedResponse.data.creation_date}{" "}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div className="patientReportContainer">
+            <div className="patientReport">
+              <h3 className="patientReportItem">
+                <p>Specialist</p> {detailedResponse.data.reporting_specialist} (
+                {detailedResponse.data.specialty})
+              </h3>
+              <h3 className="patientReportItem isCentered">
+                <p>Body Areas</p> {detailedResponse.data.body_areas}
+              </h3>
+            </div>
+            <div className="patientReportStatus">
+              <h3 className="patientReportItem">
+                <p>Report Date</p> {detailedResponse.data.reported_date}
+              </h3>
+              <h2> {detailedResponse.data.status}</h2>
+            </div>
+          </div>
         </div>
       </>
     );
