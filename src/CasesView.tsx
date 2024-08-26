@@ -115,7 +115,7 @@ function CasesView() {
     setSearch(value);
   }
 
-  // Function for fetching next page, if user is searching it will search
+  // Function for fetching next page, if user is searching it will only update the currentPage state and the data displayed is then handled by the searchFilter function.
   async function nextPage() {
     const maxPage = isSearching
       ? searchFilter(search).pages
@@ -136,6 +136,7 @@ function CasesView() {
       setCurrentPage(nextPage);
     }
   }
+  // Function for fetching prev page, if user is searching it will only update the currentPage state and the data displayed is then handled by the searchFilter function.
   async function prevPage() {
     const prevPage: number = currentPage - 1;
     if (prevPage <= 0) {
