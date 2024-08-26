@@ -1,27 +1,48 @@
 import { useParams, NavLink } from "react-router-dom";
 import { makeApiRequest } from "./services/apiService";
 import { useEffect, useState } from "react";
-import { CaseObject } from "./CasesView";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import "./assets/css/SingleCaseView.css";
 import Header from "./components/Header/Header";
 
+export type detailedCaseObject = {
+  data: {
+    id: string;
+    creation_date: string;
+    case_key: string;
+    patient: string;
+    status: string;
+    specialty: string;
+    owner: string;
+    reporting_specialist: string;
+    species: string;
+    body_areas: string;
+    turnaround: string;
+    reported_date: string;
+    image_url: string;
+  };
+};
+
 function SingleCaseView() {
+  // State which monitors query parameters, used in fetch request for patient info
   const { caseId } = useParams();
+  // State which stores and sets the API response
+  const [detailedResponse, setDetailedResponse] =
+    useState<detailedCaseObject | null>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [detailedResponse, setDetailedResponse] = useState<any>(null);
-
+  // On page load, or if query parameters change, a rquest is sent to API. This returns all the information and sets it in state hook.
   useEffect(() => {
-    async function initialDetailedRequest(): Promise<CaseObject> {
-      const allCases: Promise<CaseObject> = await makeApiRequest(`/${caseId}`);
-      setDetailedResponse(await allCases);
-      return allCases;
+    async function initialDetailedRequest(): Promise<detailedCaseObject | null> {
+      const detailedRequest: Promise<detailedCaseObject | null> =
+        await makeApiRequest(`/${caseId}`);
+      setDetailedResponse(await detailedRequest);
+      return detailedRequest;
     }
     initialDetailedRequest();
   }, [caseId]);
+
   if (!detailedResponse) {
     return (
       <>
@@ -32,6 +53,7 @@ function SingleCaseView() {
       </>
     );
   } else {
+    console.log(detailedResponse);
     return (
       <>
         <Header />
