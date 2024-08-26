@@ -9,6 +9,7 @@ import Row from "./components/Row/Row";
 import Header from "./components/Header/Header";
 import "./assets/css/CasesView.css";
 
+// Type definition of incoming object from API
 export type CaseObject = {
   totalCases: number;
   totalPages: number;
@@ -34,14 +35,30 @@ export type CaseObject = {
 };
 
 function CasesView() {
+  // State Hooks, most defined during initial useEffect API request.
+
+  //response is the state that manages what is fed into the row component and populates the cases table
   const [response, setResponse] = useState<CaseObject | null>(null);
+
+  // search is the state which is set to the string in the search bar
   const [search, setSearch] = useState<string>("");
+
+  // Current page is the state which monitors the clients current page
   const [currentPage, setCurrentPage] = useState(1);
+
+  // All cases is the state which containes a list of all cases, for use in search queries
   const [allCases, setAllCases] = useState<CaseObject | null>(null);
+
+  // Boolean state which informs whether client has clicked search or not
   const [isSearching, setIsSearching] = useState(false);
+
+  // totalCases is the state which tracks the total number of cases, whether that be from the vanilla response, or the total number of cases from a search query
   const [totalCases, setTotalCases] = useState(0);
+
+  // maxPages is the state which monitors the maximum number of pages, given the amount of cases.
   const [maxPages, setMaxPages] = useState(1);
 
+  // On initial render, a fetch request is sent via API service function and initial state is saved.
   useEffect(() => {
     async function initialRequest(): Promise<CaseObject> {
       const firstPage: Promise<CaseObject> = await makeApiRequest(
@@ -55,6 +72,7 @@ function CasesView() {
     initialRequest();
   }, []);
 
+  // Fetches all cases and puts them into a single object, for use when searching as search query needs to be compared to all cases, not just first page.
   async function fetchAllCases() {
     const fetchCases: Promise<CaseObject> = await makeApiRequest(
       `?page=1&limit=${totalCases}`
@@ -64,6 +82,8 @@ function CasesView() {
     setCurrentPage(1);
     return allCases;
   }
+
+  // This function takes the search query as an argument and checks if it is included in patient name of species, then puts results into an array and returns an object with results
   function searchFilter(search: string) {
     const filteredArray = allCases!.data.filter(
       (element: CaseObject["data"][0]) => {
@@ -86,6 +106,7 @@ function CasesView() {
     };
   }
 
+  // change handler function for search input, if client presses backspace, sets page back to 1.
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
     if (value.length != search.length) {
@@ -93,6 +114,8 @@ function CasesView() {
     }
     setSearch(value);
   }
+
+  // Function for fetching next page, if user is searching it will search
   async function nextPage() {
     const maxPage = isSearching
       ? searchFilter(search).pages
@@ -101,7 +124,7 @@ function CasesView() {
     const nextPage: number = currentPage + 1;
     if (nextPage > maxPage) {
       return <></>;
-    } else {
+    } else if (!isSearching) {
       const fetchNextPage: Promise<CaseObject> = await makeApiRequest(
         `?page=${nextPage}&limit=10`
       );
@@ -109,19 +132,23 @@ function CasesView() {
       setResponse(await fetchNextPage);
 
       return fetchNextPage;
+    } else {
+      setCurrentPage(nextPage);
     }
   }
   async function prevPage() {
     const prevPage: number = currentPage - 1;
     if (prevPage <= 0) {
       return <></>;
-    } else {
+    } else if (!isSearching) {
       const fetchPrevPage: Promise<CaseObject> = await makeApiRequest(
         `?page=${prevPage}&limit=10`
       );
       setCurrentPage(prevPage);
       setResponse(await fetchPrevPage);
       return fetchPrevPage;
+    } else {
+      setCurrentPage(prevPage);
     }
   }
 
