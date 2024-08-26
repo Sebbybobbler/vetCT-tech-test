@@ -53,7 +53,6 @@ function SingleCaseView() {
       </>
     );
   } else {
-    console.log(detailedResponse);
     return (
       <>
         <Header />
