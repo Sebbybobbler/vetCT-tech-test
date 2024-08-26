@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Row from "./components/Row/Row";
 import Header from "./components/Header/Header";
-import "./assets/css/CasesView.css";
+import "/assets/css/CasesView.css";
 
 // Type definition of incoming object from API
 export type CaseObject = {

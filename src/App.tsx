@@ -2,7 +2,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import CasesView from "./CasesView.tsx";
 import Root from "./Root.tsx";
 import SingleCaseView from "./SingleCaseView.tsx";
-import "./assets/css/App.css";
+import "/assets/css/App.css";
 
 function App() {
   return (
